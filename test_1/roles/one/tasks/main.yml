@@ -1,0 +1,21 @@
+---
+  - name: Copying local keyfile to path with Dockerfile
+    command: cat /home/ubuntu/.ssh/id_rsa.pub > authorized_keys
+
+  - name: Building the image
+    docker_image:
+      path: "{{ role_path }}"/files
+      name: "{{ img_n }}"
+
+  - name: Creating a LAN for containers
+    command: docker network create --driver bridge "{{ net_name }}"
+
+  - name: Running N containers
+    command: bash create_docker.sh arg1 arg2 arg3
+    args:
+      num: "{{ number }}"
+      nam: "{{ img_n }}"
+      nets: "{{ net_name }}"
+
+  - name: Getting the ip of each container
+    command: bash get_ip.sh

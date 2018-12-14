@@ -1,0 +1,6 @@
+---
+  - name: Creating containers for ssh access.
+    hosts: ormuco_vm
+    sudo: yes
+    roles:
+    	- one
