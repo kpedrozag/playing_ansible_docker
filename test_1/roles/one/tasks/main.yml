@@ -19,7 +19,7 @@
   
   - name: Building the image
     docker_image:
-      path: .
+      path: ./myfiles
       name: "{{ img_n }}"
 
   - name: Creating a LAN for containers
