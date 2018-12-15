@@ -1,6 +1,6 @@
 ---
   - name: Copying local keyfile to path with Dockerfile
-    command: cat /home/ubuntu/.ssh/id_rsa.pub > authorized_keys
+    shell: cat /home/ubuntu/.ssh/id_rsa.pub > authorized_keys
 
   - name: Building the image
     docker_image:

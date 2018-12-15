@@ -1,6 +1,6 @@
 ---
   - name: Creating containers for ssh access.
     hosts: ormuco_vm
-    sudo: yes
+    remote_user: ubuntu
     roles:
       - one
