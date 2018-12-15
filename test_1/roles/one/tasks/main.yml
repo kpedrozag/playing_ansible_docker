@@ -1,10 +1,22 @@
 ---
   - name: Copying local keyfile to path with Dockerfile
     shell: cat /home/ubuntu/.ssh/id_rsa.pub > authorized_keys
-
+  
+  - name: Copy files to remote node
+    copy:
+      src: {{ item.src }}
+      dest: {{ item.dest }}
+      owner: ubuntu
+      group: ubuntu
+      mode: 0644
+    with_items:
+      - { src: 'Dockerfile', dest: './Dockerfile' }
+      - { src: 'create_docker.sh', dest: './create_docker.sh' }
+      - { src: 'get_ip.sh', dest: './get_ip.sh' }
+  
   - name: Building the image
     docker_image:
-      path: "{{ role_path }}"/files
+      path: .
       name: "{{ img_n }}"
 
   - name: Creating a LAN for containers
