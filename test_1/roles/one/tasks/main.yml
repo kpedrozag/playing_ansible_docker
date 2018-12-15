@@ -1,9 +1,9 @@
 ---
   - name: Create folder for files
-    command: mkdir myfiles
+    command: mkdir {{ path_files }}
 
   - name: Copying local keyfile to path with Dockerfile
-    shell: cat /home/ubuntu/.ssh/id_rsa.pub > ./myfiles/authorized_keys
+    shell: cat /home/ubuntu/.ssh/id_rsa.pub > {{ path_files }}/authorized_keys
 
   - name: Copy files to remote node
     copy:
@@ -13,24 +13,20 @@
       group: ubuntu
       mode: 0644
     with_items:
-      - { src: 'Dockerfile', dest: './myfiles/Dockerfile' }
-      - { src: 'create_docker.sh', dest: './myfiles/create_docker.sh' }
-      - { src: 'get_ip.sh', dest: './myfiles/get_ip.sh' }
+      - { src: 'Dockerfile', dest: '{{ path_files }}/Dockerfile' }
+      - { src: 'create_docker.sh', dest: '{{ path_files }}/create_docker.sh' }
+      - { src: 'get_ip.sh', dest: '{{ path_files }}/get_ip.sh' }
   
   - name: Building the image
     docker_image:
-      path: ./myfiles
+      path: "{{ path_files }}"
       name: "{{ img_n }}"
 
   - name: Creating a LAN for containers
     command: docker network create --driver bridge "{{ net_name }}"
 
   - name: Running N containers
-    command: bash create_docker.sh arg1 arg2 arg3
-    args:
-      num: "{{ number }}"
-      nam: "{{ img_n }}"
-      nets: "{{ net_name }}"
+    command: bash {{ path_files }}/create_docker.sh "{{ number }}" "{{ img_n }}" "{{ net_name }}"
 
   - name: Getting the ip of each container
-    command: bash get_ip.sh
+    command: bash {{ path_files }}/get_ip.sh
