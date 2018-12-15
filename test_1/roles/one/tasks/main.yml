@@ -1,7 +1,10 @@
 ---
+  - name: Create folder for files
+    command: mkdir myfiles
+
   - name: Copying local keyfile to path with Dockerfile
-    shell: cat /home/ubuntu/.ssh/id_rsa.pub > authorized_keys
-  
+    shell: cat /home/ubuntu/.ssh/id_rsa.pub > ./myfiles/authorized_keys
+
   - name: Copy files to remote node
     copy:
       src: {{ item.src }}
@@ -10,9 +13,9 @@
       group: ubuntu
       mode: 0644
     with_items:
-      - { src: 'Dockerfile', dest: './Dockerfile' }
-      - { src: 'create_docker.sh', dest: './create_docker.sh' }
-      - { src: 'get_ip.sh', dest: './get_ip.sh' }
+      - { src: 'Dockerfile', dest: './myfiles/Dockerfile' }
+      - { src: 'create_docker.sh', dest: './myfiles/create_docker.sh' }
+      - { src: 'get_ip.sh', dest: './myfiles/get_ip.sh' }
   
   - name: Building the image
     docker_image:
