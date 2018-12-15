@@ -3,4 +3,4 @@
     hosts: ormuco_vm
     sudo: yes
     roles:
-    	- one
+      - one
