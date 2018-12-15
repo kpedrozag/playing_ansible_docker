@@ -4,7 +4,7 @@
 
   - name: Building the image
     docker_image:
-      path: .
+      path: "{{ role_path }}"
       name: "{{ img_n }}"
 
   - name: Creating a LAN for containers
